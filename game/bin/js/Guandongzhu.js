@@ -18,95 +18,37 @@ var Guandongzhu = /** @class */ (function (_super) {
     __extends(Guandongzhu, _super);
     function Guandongzhu() {
         var _this = _super.call(this) || this;
-        _this.bbqArr = [];
-        _this.ranArr = [];
         _this.resArr = [];
         _this.recArr = [];
         _this.t0 = 5;
         _this.t1 = 5;
         _this.t2 = 5;
         _this.appear = 0;
-        _this.ranNum = [];
         _this.resNum = [];
-        _this.createItem();
-        _this.itemPos();
-        _this.createRandom();
-        _this.ranPos();
-        // this.showRegion();
-        var layout = new Layout();
+        _this.region = new Region();
+        _this.items = new Creation();
+        _this.items.itemPos();
+        _this.items.ranPos();
         _this.drag();
         return _this;
     }
-    Guandongzhu.prototype.createItem = function () {
-        for (var i = 0; i < 3; i++) {
-            if (this.bbqArr[i] == null) {
-                var item = new Item();
-                item.setType(i);
-                this.bbqArr[i] = item;
-            }
-        }
-    };
     Guandongzhu.prototype.drag = function () {
-        this.bbqArr[0].on(LayaEvent.MOUSE_DOWN, this, this.onStartDrag);
-        this.bbqArr[1].on(LayaEvent.MOUSE_DOWN, this, this.onStartDrag);
-        this.bbqArr[2].on(LayaEvent.MOUSE_DOWN, this, this.onStartDrag);
-        this.bbqArr[0].on(LayaEvent.MOUSE_UP, this, this.inRectangle);
-        this.bbqArr[1].on(LayaEvent.MOUSE_UP, this, this.inRectangle);
-        this.bbqArr[2].on(LayaEvent.MOUSE_UP, this, this.inRectangle);
+        Arrays.bbqArr[0].on(LayaEvent.MOUSE_DOWN, this, this.onStartDrag);
+        Arrays.bbqArr[1].on(LayaEvent.MOUSE_DOWN, this, this.onStartDrag);
+        Arrays.bbqArr[2].on(LayaEvent.MOUSE_DOWN, this, this.onStartDrag);
+        Arrays.bbqArr[0].on(LayaEvent.MOUSE_UP, this, this.inRectangle);
+        Arrays.bbqArr[1].on(LayaEvent.MOUSE_UP, this, this.inRectangle);
+        Arrays.bbqArr[2].on(LayaEvent.MOUSE_UP, this, this.inRectangle);
     };
-    // private showRegion():void
-    // {
-    //     var dragHeight = 200;
-    //     var dragWidth = 200;
-    //     Laya.stage.graphics.drawRect(300, 200, dragWidth, dragHeight, null, "#FFFFFF", 2);
-    //     Laya.stage.graphics.drawRect(600, 200, dragWidth, dragHeight, null, "#FFFFFF", 2);
-    //     Laya.stage.graphics.drawRect(900, 200, dragWidth, dragHeight, null, "#FFFFFF", 2);
-    //     Laya.stage.graphics.drawCircle(1100, 600, 100, null, "#FF0000", 5)
-    // }
     Guandongzhu.prototype.onStartDrag = function (e) {
         var target = e.target;
         target.startDrag(null, false, 0);
     };
-    Guandongzhu.prototype.itemPos = function () {
-        this.bbqArr[0].x = 50;
-        this.bbqArr[0].y = 50;
-        this.bbqArr[1].x = 50;
-        this.bbqArr[1].y = 250;
-        this.bbqArr[2].x = 50;
-        this.bbqArr[2].y = 450;
-        Laya.stage.addChild(this.bbqArr[0]);
-        Laya.stage.addChild(this.bbqArr[1]);
-        Laya.stage.addChild(this.bbqArr[2]);
-    };
-    Guandongzhu.prototype.createRandom = function () {
-        for (var i = 0; i < 3; i++) {
-            var item = new Item();
-            var random = Math.floor(Math.random() * 3);
-            item.setType(random);
-            this.ranArr[i] = item;
-            this.ranNum.push(random);
-        }
-    };
-    Guandongzhu.prototype.ranPos = function () {
-        this.ranArr[0].x = 300;
-        this.ranArr[0].y = 600;
-        this.ranArr[1].x = 500;
-        this.ranArr[1].y = 600;
-        this.ranArr[2].x = 700;
-        this.ranArr[2].y = 600;
-        Laya.stage.addChild(this.ranArr[0]);
-        Laya.stage.addChild(this.ranArr[1]);
-        Laya.stage.addChild(this.ranArr[2]);
-    };
     Guandongzhu.prototype.inRectangle = function (e) {
         var item = e.target;
-        // item.stopDrag();
-        // item= item;
-        // console.log(this.bbqArr[item.type].x)
-        // console.log(this.bbqArr[item.type].y)
-        this.bbqArr[item.type] = null;
-        this.createItem();
-        this.itemPos();
+        Arrays.bbqArr[item.type] = null;
+        this.items.createItem();
+        this.items.itemPos();
         this.drag();
         if (item.x > 300 && item.x < 450 && item.y > 200 && item.y < 350 || item.x > 600 && item.x < 750 && item.y > 200 && item.y < 350 || item.x > 900 && item.x < 1050 && item.y > 200 && item.y < 350) {
             this.appear += 1;
@@ -257,7 +199,7 @@ var Guandongzhu = /** @class */ (function (_super) {
         this.t2 = 5;
     };
     Guandongzhu.prototype.check = function () {
-        if (this.ranNum.sort().toString() == this.resNum.sort().toString()) {
+        if (Arrays.ranNum.sort().toString() == this.resNum.sort().toString()) {
             console.log("速度真快");
         }
         else {
@@ -267,16 +209,16 @@ var Guandongzhu = /** @class */ (function (_super) {
     };
     Guandongzhu.prototype.nextGroup = function () {
         this.resNum = [];
-        this.ranNum = [];
+        Arrays.ranNum = [];
         this.resArr = [];
         Laya.stage.removeChild(this.resArr[0]);
         Laya.stage.removeChild(this.resArr[1]);
         Laya.stage.removeChild(this.resArr[2]);
-        Laya.stage.removeChild(this.ranArr[0]);
-        Laya.stage.removeChild(this.ranArr[1]);
-        Laya.stage.removeChild(this.ranArr[2]);
-        this.createRandom();
-        this.ranPos();
+        Laya.stage.removeChild(Arrays.ranArr[0]);
+        Laya.stage.removeChild(Arrays.ranArr[1]);
+        Laya.stage.removeChild(Arrays.ranArr[2]);
+        this.items.createRandom();
+        this.items.ranPos();
     };
     return Guandongzhu;
 }(Laya.Sprite));

@@ -4,56 +4,32 @@
 class Guandongzhu extends Laya.Sprite{
     constructor(){
         super();
-        // this.createItem();
-        // this.itemPos();
-        // this.createRandom();
-        // this.ranPos();
-        // this.showRegion();
-        var region = new Region(); 
-        var items = new Creation();
+        this.region = new Region(); 
+        this.items = new Creation();
+        this.items.itemPos();
+        this.items.ranPos();
         this.drag();
     }
-    // private bbqArr :Array<Item> = []; 
-    // private ranArr :Array<Item> = [];
+    private region : Region;
+    private items : Creation;
     private resArr : Array<Item> = [];
     private recArr : Array<Item> = [];
     private t0 : number = 5;
     private t1 :number = 5;
     private t2 : number = 5;
     private appear : number = 0;
-    // private ranNum : Array<number> = [];
     private resNum : Array<number> = [];
-    // private createItem():void
-    // {
-    //     for(var i = 0; i < 3; i++)
-    //     {
-    //         if(this.bbqArr[i] == null)
-    //         {
-    //             var item = new Item();
-    //             item.setType(i);    
-    //             this.bbqArr[i] = item;
-    //         }
-    //     }
-    // }
+
     private drag():void
     {
-        this.bbqArr[0].on(LayaEvent.MOUSE_DOWN, this, this.onStartDrag);
-        this.bbqArr[1].on(LayaEvent.MOUSE_DOWN, this, this.onStartDrag);
-        this.bbqArr[2].on(LayaEvent.MOUSE_DOWN, this, this.onStartDrag);
-        this.bbqArr[0].on(LayaEvent.MOUSE_UP, this, this.inRectangle);
-        this.bbqArr[1].on(LayaEvent.MOUSE_UP, this, this.inRectangle);
-        this.bbqArr[2].on(LayaEvent.MOUSE_UP, this, this.inRectangle);
+        Arrays.bbqArr[0].on(LayaEvent.MOUSE_DOWN, this, this.onStartDrag);
+        Arrays.bbqArr[1].on(LayaEvent.MOUSE_DOWN, this, this.onStartDrag);
+        Arrays.bbqArr[2].on(LayaEvent.MOUSE_DOWN, this, this.onStartDrag);
+        Arrays.bbqArr[0].on(LayaEvent.MOUSE_UP, this, this.inRectangle);
+        Arrays.bbqArr[1].on(LayaEvent.MOUSE_UP, this, this.inRectangle);
+        Arrays.bbqArr[2].on(LayaEvent.MOUSE_UP, this, this.inRectangle);
     }
   
-    // private showRegion():void
-    // {
-    //     var dragHeight = 200;
-    //     var dragWidth = 200;
-    //     Laya.stage.graphics.drawRect(300, 200, dragWidth, dragHeight, null, "#FFFFFF", 2);
-    //     Laya.stage.graphics.drawRect(600, 200, dragWidth, dragHeight, null, "#FFFFFF", 2);
-    //     Laya.stage.graphics.drawRect(900, 200, dragWidth, dragHeight, null, "#FFFFFF", 2);
-    //     Laya.stage.graphics.drawCircle(1100, 600, 100, null, "#FF0000", 5)
-    // }
 
     private onStartDrag(e:Event):void
     {
@@ -61,54 +37,13 @@ class Guandongzhu extends Laya.Sprite{
         target.startDrag(null, false, 0);
     }
 
-    // private itemPos():void
-    // {
-    //     this.bbqArr[0].x = 50;
-    //     this.bbqArr[0].y = 50;
-    //     this.bbqArr[1].x = 50;
-    //     this.bbqArr[1].y = 250;
-    //     this.bbqArr[2].x = 50;
-    //     this.bbqArr[2].y = 450;
-    //     Laya.stage.addChild(this.bbqArr[0]);
-    //     Laya.stage.addChild(this.bbqArr[1]);
-    //     Laya.stage.addChild(this.bbqArr[2]);
-    // }
-
-    // private createRandom():void
-    // {
-    //     for( var i = 0; i < 3; i++)
-    //     {
-    //         var item = new Item();
-    //         var random = Math.floor(Math.random()*3);
-    //         item.setType(random)
-    //         this.ranArr[i] = item;
-    //         this.ranNum.push(random);
-    //     }
-    // }
-
-    // private ranPos():void
-    // {
-    //     this.ranArr[0].x = 300;
-    //     this.ranArr[0].y = 600;
-    //     this.ranArr[1].x = 500
-    //     this.ranArr[1].y = 600;
-    //     this.ranArr[2].x = 700;
-    //     this.ranArr[2].y = 600;
-    //     Laya.stage.addChild(this.ranArr[0]);
-    //     Laya.stage.addChild(this.ranArr[1]);
-    //     Laya.stage.addChild(this.ranArr[2]);
-    // }
 
     private inRectangle(e:Event):void
     {
         var item:Item = e.target as any;
-        // item.stopDrag();
-        // item= item;
-        // console.log(this.bbqArr[item.type].x)
-        // console.log(this.bbqArr[item.type].y)
-        this.bbqArr[item.type]= null;
-        // this.createItem();
-        // this.itemPos();
+        Arrays.bbqArr[item.type]= null;
+        this.items.createItem();
+        this.items.itemPos();
         this.drag();
         if(item.x > 300 && item.x < 450 && item.y > 200 && item.y < 350 || item.x > 600 && item.x < 750 && item.y > 200 && item.y < 350 || item.x > 900 && item.x < 1050 && item.y > 200 && item.y < 350)
         {
@@ -309,7 +244,7 @@ class Guandongzhu extends Laya.Sprite{
 
     private check():void
     {
-        if(this.ranNum.sort().toString() == this.resNum.sort().toString())
+        if(Arrays.ranNum.sort().toString() == this.resNum.sort().toString())
         {
             console.log("速度真快")
         }
@@ -323,16 +258,16 @@ class Guandongzhu extends Laya.Sprite{
     private nextGroup():void
     {
         this.resNum = [];
-        this.ranNum = [];
+        Arrays.ranNum = [];
         this.resArr = [];
         Laya.stage.removeChild(this.resArr[0]);
         Laya.stage.removeChild(this.resArr[1]);
         Laya.stage.removeChild(this.resArr[2]);
-        Laya.stage.removeChild(this.ranArr[0]);
-        Laya.stage.removeChild(this.ranArr[1]);
-        Laya.stage.removeChild(this.ranArr[2]);
-        // this.createRandom();
-        // this.ranPos();
+        Laya.stage.removeChild(Arrays.ranArr[0]);
+        Laya.stage.removeChild(Arrays.ranArr[1]);
+        Laya.stage.removeChild(Arrays.ranArr[2]);
+        this.items.createRandom();
+        this.items.ranPos();
     } 
 
     // private counterU(item:Item):void
