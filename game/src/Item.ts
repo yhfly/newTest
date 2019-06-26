@@ -6,6 +6,9 @@ class Item extends Laya.Sprite{
     constructor(){
         super();
     }
+    enum item{
+        
+    }
 
     public setType(type:number):void
     {
